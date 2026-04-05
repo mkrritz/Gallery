@@ -1,7 +1,6 @@
 #ifndef UI_HPP
 #define UI_HPP
 
-
 enum struct Quads {
     SCREEN,
     Count

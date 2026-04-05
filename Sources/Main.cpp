@@ -65,6 +65,10 @@ static void RenderGallery(const Shader* const shaders[],
     glBindSampler(0, 0);
 }
 
+// TODO:
+//  Click to select one quad and start rendering only that fullscreen.
+//
+
 int main() {
     GLFWwindow* window;
     window = WindowInit();

@@ -26,8 +26,6 @@ void RenderQuadToScreen(const Shader* const shaders[],
 
 void UIInit(Heap* const heap) {
     UI* ui = (UI*)HeapAllocate(heap, sizeof(UI));
-    ui->ubo_handle = (GLuint*)HeapAllocate(heap, sizeof(GLuint) * static_cast<uint32_t>(Shaders::Count));
-    
     glCreateVertexArrays(1, &ui->vao);
     
     {
@@ -46,21 +44,18 @@ void UIInit(Heap* const heap) {
         }
     }
     
-    // The place of each quad from RenderGallery
     UniformBufferObjectUI buffer[static_cast<uint32_t>(Shaders::Count)];
     buffer[static_cast<uint32_t>(Shaders::DrawTexture)].rect = glm::vec4(-1.0f, -1.0f, 2.0f, 2.0f);
-    
     glm::vec2 size = glm::vec2(0.35f, 0.35f);
     glm::vec2 padding = glm::vec2(0.015f, 0.015f);
     for (uint32_t index = 1; index < static_cast<uint32_t>(Shaders::Count); index++) {
         uint32_t col = (index - 1) % 5;
         uint32_t row = (index - 1) / 5;
-        
         glm::vec2 position = glm::vec2(-0.9f, -0.9f) + (size + padding) * glm::vec2(col, row);
-        
-        // Store gallery quads right after the Fullscreen slot
         buffer[index].rect = glm::vec4(position.x, position.y, size.x, size.y);
     }
+    
+    ui->ubo_handle = (GLuint*)HeapAllocate(heap, sizeof(GLuint) * static_cast<uint32_t>(Shaders::Count));
     glCreateBuffers(static_cast<uint32_t>(Shaders::Count), ui->ubo_handle);
     for (uint32_t index = 0; index < static_cast<uint32_t>(Shaders::Count); index++) {
         glNamedBufferStorage(ui->ubo_handle[index],
