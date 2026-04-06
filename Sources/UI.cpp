@@ -22,10 +22,13 @@ void RenderQuadToScreen(const Shader* const shaders[],
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glBindTextureUnit(1, 0);
     glBindBufferBase(GL_UNIFORM_BUFFER, 2, 0);
+    
+    glBindSampler(1, 0);
 }
 
 void UIInit(Heap* const heap) {
     UI* ui = (UI*)HeapAllocate(heap, sizeof(UI));
+    
     glCreateVertexArrays(1, &ui->vao);
     
     {
@@ -44,6 +47,9 @@ void UIInit(Heap* const heap) {
         }
     }
     
+    // That's a little bit broken. (If DrawTexture is not the first shader)
+    // Broken like the RenderGallery loop is.
+    // It's ok.
     UniformBufferObjectUI buffer[static_cast<uint32_t>(Shaders::Count)];
     buffer[static_cast<uint32_t>(Shaders::DrawTexture)].rect = glm::vec4(-1.0f, -1.0f, 2.0f, 2.0f);
     glm::vec2 size = glm::vec2(0.35f, 0.35f);

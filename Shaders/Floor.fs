@@ -30,19 +30,6 @@ vec2 rotate(vec2 p, float angle) {
     return mat2(c, -s, s, c) * p;
 }
 
-vec2 Threedify(vec2 coord, float pitch, float zoomFOV) {
-    coord.x *= ASPECT;
-
-    coord.y *= (1.0*pitch);
-    
-    float depth = 1.0 -coord.y * 1.0;
-    float scale = 1.0 / (1.0 + depth * 2.0);
-    coord.x *= scale;
-
-    // Apply zoom level
-    return coord * zoomFOV;
-}
-
 // Returns a line value (0 to 1) indicating how close a world position is to a grid line
 float gridLine(vec2 worldPos, float spacing, float thickness) {
     // Calculate position relative to grid center

@@ -91,10 +91,3 @@ void main() {
 
     FragColor = vec4(color, 1.0);
 }
-
-// TODO 2:
-// Get Camera position and Camera forward and other camera stuff from a buffer
-// so that we can enter the fragment world.
-
-// TODO 2:
-// Do quaternions?

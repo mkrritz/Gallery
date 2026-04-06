@@ -89,7 +89,8 @@ int main() {
     
     Quad& quad = ui->quads[(uint32_t)Quads::SCREEN];
     
-    glBindVertexArray(ui->vao); // There is only quad rendering happening
+    glBindVertexArray(ui->vao); // There is only quad rendering happening.
+                                // VAO is useless anyway. Attributeless vertices.
     
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -113,7 +114,11 @@ int main() {
                                       0,
                                       sizeof(UniformBufferObjectScene),
                                       GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT);
-    glBindBufferBase(GL_UNIFORM_BUFFER, 3, scene_handle);
+    
+    glBindBufferBase(GL_UNIFORM_BUFFER, 3, scene_handle); // This is fine. Everything the same..
+                                                          // Fix if things get out of hand.
+                                                          // Most likely here forever.
+                                                  // Change binding point to 0 instead then.
     
     const float dt = 1.0f/60.0f;
     float CurrectTime, LastTime, DeltaTime;

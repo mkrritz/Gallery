@@ -63,16 +63,16 @@ static void SetWindowHints() {
     //glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
     
     // Window
-    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-    glfwWindowHint(GLFW_VISIBLE,                    GL_TRUE);
-    glfwWindowHint(GLFW_DECORATED,                  GL_TRUE);
-    glfwWindowHint(GLFW_FOCUSED,                    GL_TRUE);
-    glfwWindowHint(GLFW_FLOATING,                   GL_FALSE);
-    glfwWindowHint(GLFW_MAXIMIZED,                  GL_FALSE);
-    glfwWindowHint(GLFW_CENTER_CURSOR,              GL_FALSE);
-    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER,    GL_FALSE);
-    glfwWindowHint(GLFW_FOCUS_ON_SHOW,              GL_TRUE);
-    glfwWindowHint(GLFW_SCALE_TO_MONITOR,           GL_TRUE);
+    glfwWindowHint(GLFW_RESIZABLE,               GL_TRUE);
+    glfwWindowHint(GLFW_VISIBLE,                 GL_TRUE);
+    glfwWindowHint(GLFW_DECORATED,               GL_TRUE);
+    glfwWindowHint(GLFW_FOCUSED,                 GL_TRUE);
+    glfwWindowHint(GLFW_FLOATING,                GL_FALSE);
+    glfwWindowHint(GLFW_MAXIMIZED,               GL_FALSE);
+    glfwWindowHint(GLFW_CENTER_CURSOR,           GL_FALSE);
+    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GL_FALSE);
+    glfwWindowHint(GLFW_FOCUS_ON_SHOW,           GL_TRUE);
+    glfwWindowHint(GLFW_SCALE_TO_MONITOR,        GL_TRUE);
 
     // Framebuffer
     glfwWindowHint(GLFW_RED_BITS,       8);
