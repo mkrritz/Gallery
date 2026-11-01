@@ -18,13 +18,10 @@ float map(float value, float a, float b, float c, float d) {
     return c + (d - c) * ((value - a) / (b - a));
 }
 
-// Birds
-
 void main() {
-    float fly = 8.0 * cos(Time);
     float up_down = 5.0 * sin(Time);
     
-    float wiggle = 1.0;
+    float wiggle = 2.0;
     float fat = 5.0 * cos(Time*wiggle) * sin(Time);
     
     float domain = map(UV.x, 0.0, 1.0, -50.0 + fat, 50.0);
@@ -33,7 +30,7 @@ void main() {
     
     float diff = abs(range - val);
     
-    float thickness = 0.2 + clamp(range, 0.0, 4.0);// for Mode = 23
+    float thickness = 0.2 + clamp(range, 0.0, 6.0);
     float intensity = 1.0 - smoothstep(0.30, thickness , diff);
     
     FragColor = vec4(vec3(intensity), 1.0);

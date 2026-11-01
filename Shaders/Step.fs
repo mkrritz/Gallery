@@ -4,10 +4,8 @@
 #define PI    3.1415925
 #define HPI   1.5707963
 
-// Input UV coordinate (0 to 1 range)
 in vec2 UV;
 
-// Final output color
 out vec4 FragColor;
 
 // Uniform time input for animation
@@ -18,11 +16,12 @@ layout(std140, binding = 3) uniform SceneUniformBufferObject {
 #define Time Scene.Time.x
 
 const float ASPECT = 4.0 / 3.0; // Do this properly
-const float FOV = 90.0; // What?
-const vec3 minorColor = vec3(0.3, 0.4, 0.5); // Soft blue-gray
-const vec3 majorColor = vec3(0.6, 0.2, 0.2); // Strong reddish grid
-const vec3 originColor = vec3(1.0, 0.0, 0.0); // Bright red origin marker
-const vec3 targetColor = vec3(1.0, 1.0, 0.0); // Bright yellow target marker // DO with FORWARD
+const float FOV = 90.0;         // What? How useless is this?
+
+const vec3 minorColor = vec3(0.3, 0.4, 0.5);
+const vec3 majorColor = vec3(0.6, 0.2, 0.2);
+const vec3 originColor = vec3(1.0, 0.0, 0.0);
+const vec3 targetColor = vec3(1.0, 1.0, 0.0); // DO with FORWARD
 
 // Returns a line value (0 to 1) indicating how close a world position is to a grid line
 float gridLine(vec2 worldPos, float spacing, float thickness) {

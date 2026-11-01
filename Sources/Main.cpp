@@ -66,7 +66,7 @@ static void RenderGallery(const Shader* const shaders[],
 }
 
 // TODO:
-//  Click to select one quad and start rendering only that fullscreen.
+//  Click to select one quad and start rendering only that one fullscreen.
 //
 
 int main() {
@@ -163,13 +163,13 @@ int main() {
         }
         
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, quad.framebuffer);
-        glClearColor(1, 0, 0, 0); // Red
+        glClearColor(1, 0, 0, 0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         RenderGallery(shaders, camera, ui, TotalTime);
         
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-        glClearColor(0, 0, 1, 0); // Blue
+        glClearColor(0, 0, 1, 0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         RenderQuadToScreen(shaders, ui, camera->sampler_clamp_linear, quad.texture);
