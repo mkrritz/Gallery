@@ -1,5 +1,5 @@
-Binaries/Gallery.exe
-Objects
-Assemblies
-Release
+Binaries/
+Objects/
+Assemblies/
+Release/
 Includes/pch.h.gch
