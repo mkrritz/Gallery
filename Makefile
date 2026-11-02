@@ -17,8 +17,10 @@ PCH          := $(INCLUDE_DIR)/pch.h
 
 PKGS     := glfw3 glew
 CXXFLAGS := -O0 -Wall -std=c++17 \
-            $(shell pkg-config --cflags $(PKGS)) -I$(INCLUDE_DIR)
-LDFLAGS  := $(shell pkg-config --libs $(PKGS)) -lopengl32 -static-libgcc -static-libstdc++ -Wl,-Bstatic -lwinpthread -Wl,-Bdynamic
+            $(shell pkg-config --static --cflags $(PKGS)) -I$(INCLUDE_DIR)
+LDFLAGS  := -static-libgcc -static-libstdc++ -Wl,-Bstatic \
+            $(shell pkg-config --static --libs $(PKGS)) -lwinpthread \
+            -Wl,-Bdynamic -lopengl32 -lgdi32
 
 SOURCES = \
 	Main.cpp \
