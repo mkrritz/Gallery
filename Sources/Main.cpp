@@ -10,9 +10,6 @@
 #include "mkr/UI.h"
 #include "mkr/Window.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image/stb_image.h"
-
 static std::mt19937 gen(time(nullptr));
 static std::uniform_real_distribution<float> dist(-1.0f, 1.0f);
 static std::uniform_real_distribution<float> dist01(0.0f, 1.0f);
