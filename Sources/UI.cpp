@@ -8,16 +8,16 @@
 #include "mkr/Camera.h"
 #include "mkr/Window.h"
 
-void RenderQuadToScreen(const Shader* const shaders[],
+void RenderQuadToScreen(const ShaderLibrary* const shaders,
                         const UI* const ui,
                         const GLuint sampler,
                         const GLuint texture) {
-    const Shader* shader = shaders[static_cast<uint32_t>(Shaders::DrawTexture)];
+    const GLuint program = ShaderLibraryProgram(shaders, ScreenShaderSlot);
     
     glBindSampler(1, sampler);
     
-    glUseProgram(shader->ID);
-    glBindBufferBase(GL_UNIFORM_BUFFER, 2, ui->ubo_handle[static_cast<uint32_t>(Shaders::DrawTexture)]);
+    glUseProgram(program);
+    glBindBufferBase(GL_UNIFORM_BUFFER, 2, ui->ubo_handle[ScreenShaderSlot]);
     glBindTextureUnit(1, texture);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glBindTextureUnit(1, 0);
@@ -47,18 +47,21 @@ void UIInit(Heap* const heap) {
         }
     }
     
-    // That's a little bit broken. (If DrawTexture is not the first shader)
-    // Broken like the RenderGallery loop is.
-    // It's ok.
     UniformBufferObjectUI buffer[static_cast<uint32_t>(Shaders::Count)];
-    buffer[static_cast<uint32_t>(Shaders::DrawTexture)].rect = glm::vec4(-1.0f, -1.0f, 2.0f, 2.0f);
     glm::vec2 size = glm::vec2(0.35f, 0.35f);
     glm::vec2 padding = glm::vec2(0.015f, 0.015f);
-    for (uint32_t index = 1; index < static_cast<uint32_t>(Shaders::Count); index++) {
-        uint32_t col = (index - 1) % 5;
-        uint32_t row = (index - 1) / 5;
+    uint32_t tile = 0;
+    for (uint32_t index = 0; index < static_cast<uint32_t>(Shaders::Count); index++) {
+        if (index == ScreenShaderSlot) {
+            buffer[index].rect = glm::vec4(-1.0f, -1.0f, 2.0f, 2.0f);
+            continue;
+        }
+
+        uint32_t col = tile % 5;
+        uint32_t row = tile / 5;
         glm::vec2 position = glm::vec2(-0.9f, -0.9f) + (size + padding) * glm::vec2(col, row);
         buffer[index].rect = glm::vec4(position.x, position.y, size.x, size.y);
+        ++tile;
     }
     
     ui->ubo_handle = (GLuint*)HeapAllocate(heap, sizeof(GLuint) * static_cast<uint32_t>(Shaders::Count));

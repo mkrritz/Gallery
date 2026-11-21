@@ -17,7 +17,6 @@ static Heap* HeapInit(size_t size) {
 void HeapsInit(Heap* heaps[]) {
     heaps[(uint32_t)Heaps::Camera]  = HeapInit(64);
     heaps[(uint32_t)Heaps::UI]      = HeapInit(256);
-    heaps[(uint32_t)Heaps::Shader]  = HeapInit(10 * 1024);
     
 }
 
@@ -46,7 +45,6 @@ static std::string FormatWithCommas(uint32_t value) {
 static const char* HeapNames[static_cast<uint32_t>(Heaps::Count)] = {
     // Keep these in sync with 'enum struct Heaps'
     // Used for prints only
-    "Shader",
     "UI",
     "Camera",
 };

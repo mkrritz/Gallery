@@ -4,7 +4,6 @@
 #include "mkr/Assert.h"
 #include "mkr/Window.h"
 #include "mkr/Camera.h"
-#include "mkr/Shader.h"
 #include "mkr/Memory.h"
 
 

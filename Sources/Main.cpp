@@ -4,7 +4,6 @@
 #include "mkr/Assert.h"
 #include "mkr/Input.h"
 #include "mkr/Shader.h"
-#include "mkr/Globals.h"
 #include "mkr/Camera.h"
 #include "mkr/Memory.h"
 #include "mkr/UI.h"
@@ -26,10 +25,9 @@ void CameraInit(Heap* const);
 // Camera
 
 // Shader
-void ShadersInit(Heap* const,
-                 Shader*[], bool);
-void ReloadShader(Heap* const,
-                  uint32_t);
+static void ShaderLogWrite(void*, const char* text) {
+    printf("%s\n", text);
+}
 // Shader
 
 // Input
@@ -38,23 +36,24 @@ Input* NextRecordedInputState();
 
 // UI
 void UIInit(Heap* const);
-void RenderQuadToScreen(const Shader* const shaders[],
+void RenderQuadToScreen(const ShaderLibrary* const shaders,
                         const UI* const ui,
                         const GLuint sampler,
                         const GLuint texture);
 // UI
 
-static void RenderGallery(const Shader* const shaders[],
+static void RenderGallery(const ShaderLibrary* const shaders,
                           const Camera* const camera,
                           const UI* const ui,
                           float TotalTime) {
-    const Shader* shader;
-    
     glBindSampler(0, camera->sampler_clamp_linear);
     
-    for (uint32_t index = 1; index < (uint32_t)Shaders::Count; index++) {
-        shader = shaders[index];
-        glUseProgram(shader->ID);
+    for (uint32_t index = 0; index < (uint32_t)Shaders::Count; index++) {
+        if (index == ScreenShaderSlot) {
+            continue;
+        }
+
+        glUseProgram(ShaderLibraryProgram(shaders, index));
         glBindBufferBase(GL_UNIFORM_BUFFER, 2, ui->ubo_handle[index]);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
@@ -84,8 +83,13 @@ int main() {
     Heap* heaps[(uint32_t)Heaps::Count] = {nullptr};
     HeapsInit(heaps);
     
-    Shader* shaders[(uint32_t)Shaders::Count] = {nullptr};
-    ShadersInit(heaps[(uint32_t)Heaps::Shader], shaders, true);
+    ShaderLog shaderLog = { ShaderLogWrite, nullptr };
+    ShaderLibrary* shaders = ShaderLibraryOpen("Shaders/",
+                                               FocusShaderPrograms,
+                                               FocusShaderProgramCount,
+                                               &shaderLog,
+                                               1);
+    ASSERT(shaders == nullptr, "Shader library failed to open.");
     
     CameraInit(heaps[(uint32_t)Heaps::Camera]);
     Camera* const camera = (Camera*)heaps[(uint32_t)Heaps::Camera]->memory;
@@ -148,11 +152,7 @@ int main() {
         UpdateCount += 1;
         glfwPollEvents();
         
-        while (shader_slots_to_reload) {
-            uint32_t slot = __builtin_ctzll(shader_slots_to_reload);
-            shader_slots_to_reload &= ~(1ULL << slot);
-            ReloadShader(heaps[(uint32_t)Heaps::Shader], slot);
-        }
+        ShaderLibraryReloadChanged(shaders);
         
         input = NextRecordedInputState();
         
@@ -183,6 +183,10 @@ int main() {
         glfwSwapBuffers(window);
     }
     
+    ShaderLibraryClose(shaders);
+    glfwDestroyWindow(window);
+    glfwTerminate();
+
     return 1;
 }
 

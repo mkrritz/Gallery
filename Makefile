@@ -1,26 +1,33 @@
+
 APP_NAME     := Gallery
 APP_ICON     := Gallery
 
 COMPILER     := g++
+
 INCLUDE_DIR  := Includes
 SOURCE_DIR   := Sources
+SHADER_DIR   := Shaders
+
 ASSEMBLY_DIR := Assemblies
 BINARY_DIR   := Binaries
 OBJECT_DIR   := Objects
 
-SHADER_DIR   := Shaders
-
 RELEASE_DIR  := Release
 
-TARGET       := $(BINARY_DIR)/$(APP_NAME)
+TOOLCHAIN    := $(abspath $(dir $(firstword $(shell where.exe $(COMPILER) 2>nul)))/..)
+FOCUS_LIB    := $(TOOLCHAIN)/lib/libFocus.a
+
 PCH          := $(INCLUDE_DIR)/pch.h
+TARGET       := $(BINARY_DIR)/$(APP_NAME).exe
 
 PKGS     := glfw3 glew
-CXXFLAGS := -O0 -Wall -std=c++17 \
+CXXFLAGS := -O0 -Wall -pedantic-errors -std=c++17 \
             $(shell pkg-config --static --cflags $(PKGS)) -I$(INCLUDE_DIR)
-LDFLAGS  := -static-libgcc -static-libstdc++ -Wl,-Bstatic \
-            $(shell pkg-config --static --libs $(PKGS)) -lwinpthread \
-            -Wl,-Bdynamic -lopengl32 -lgdi32
+LDLIBS   := -Wl,-Bstatic \
+            -lFocus $(shell pkg-config --static --libs $(PKGS)) \
+            -lwinpthread \
+            -Wl,-Bdynamic -lopengl32
+LDFLAGS  := -static-libgcc -static-libstdc++
 
 SOURCES = \
 	Main.cpp \
@@ -28,7 +35,6 @@ SOURCES = \
 	Shader.cpp \
 	Camera.cpp \
 	UI.cpp \
-	Globals.cpp \
 	Memory.cpp \
 	Window.cpp
 
@@ -55,9 +61,9 @@ $(OBJECT_DIR) $(ASSEMBLY_DIR) $(BINARY_DIR):
 ##############################################################
 
 ##############################################################
-$(TARGET): $(PCH).gch $(OBJECTS) | $(BINARY_DIR)
+$(TARGET): $(PCH).gch $(OBJECTS) $(FOCUS_LIB) | $(BINARY_DIR)
 	@echo Linking...
-	@$(COMPILER) $(OBJECTS) -o $@ $(LDFLAGS)
+	@$(COMPILER) $(OBJECTS) -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(PCH).gch: $(PCH)
 	@echo Generating precompiled header...
@@ -93,8 +99,7 @@ release:
 	@$(MAKE) --no-print-directory clean
 	@$(MAKE) --no-print-directory all
 	@mkdir $(subst /,\,$(RELEASE_DIR))
-	@copy /Y $(subst /,\,$(TARGET).exe) $(subst /,\,$(RELEASE_DIR)) > nul
-	@echo Copying Shaders...
+	@copy /Y $(subst /,\,$(TARGET)) $(subst /,\,$(RELEASE_DIR)) > nul
 	@xcopy /E /I /Y $(SHADER_DIR) $(subst /,\,$(RELEASE_DIR))\$(SHADER_DIR) > nul
 	@powershell -NoProfile -ExecutionPolicy Bypass -File ReleaseDLLs.ps1 \
 				-ReleaseDir "$(subst /,\,$(RELEASE_DIR))" -AppName "$(APP_NAME)"

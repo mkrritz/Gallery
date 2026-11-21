@@ -2,7 +2,6 @@
 #define PCH_H
 
 #include <windows.h>
-#include <pthread.h>
 
 #ifndef GLEW_STATIC
 #define GLEW_STATIC
@@ -17,8 +16,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <filesystem>
-#include <fstream>
-#include <sys/stat.h>
+#include <string>
 
 #include <chrono>
 
