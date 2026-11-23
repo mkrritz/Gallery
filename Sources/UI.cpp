@@ -8,11 +8,11 @@
 #include "mkr/Camera.h"
 #include "mkr/Window.h"
 
-void RenderQuadToScreen(const ShaderLibrary* const shaders,
+void RenderQuadToScreen(const Focus* const shaders,
                         const UI* const ui,
                         const GLuint sampler,
                         const GLuint texture) {
-    const GLuint program = ShaderLibraryProgram(shaders, ScreenShaderSlot);
+    const GLuint program = GetShader(shaders, ScreenShaderSlot);
     
     glBindSampler(1, sampler);
     

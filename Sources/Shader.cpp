@@ -2,7 +2,7 @@
 
 #include "mkr/Shader.h"
 
-extern const ShaderFileSet FocusShaderPrograms[] = {
+extern const ShaderConfig FocusShaderPrograms[] = {
     { "Quad.vs", nullptr, "DrawTexture.fs", nullptr, nullptr, nullptr },
     { "Quad.vs", nullptr, "Tangent.fs",     nullptr, nullptr, nullptr },
     { "Quad.vs", nullptr, "Step.fs",        nullptr, nullptr, nullptr },

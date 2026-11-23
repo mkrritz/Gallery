@@ -35,7 +35,7 @@ enum struct Shaders {
 // The gallery renders every program except this one as a tile.
 inline constexpr uint32_t ScreenShaderSlot = static_cast<uint32_t>(Shaders::DrawTexture);
 
-extern const ShaderFileSet FocusShaderPrograms[];
+extern const ShaderConfig FocusShaderPrograms[];
 extern const size_t FocusShaderProgramCount;
 
 #endif

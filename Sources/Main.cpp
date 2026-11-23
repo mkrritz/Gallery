@@ -36,13 +36,13 @@ Input* NextRecordedInputState();
 
 // UI
 void UIInit(Heap* const);
-void RenderQuadToScreen(const ShaderLibrary* const shaders,
+void RenderQuadToScreen(const Focus* const shaders,
                         const UI* const ui,
                         const GLuint sampler,
                         const GLuint texture);
 // UI
 
-static void RenderGallery(const ShaderLibrary* const shaders,
+static void RenderGallery(const Focus* const shaders,
                           const Camera* const camera,
                           const UI* const ui,
                           float TotalTime) {
@@ -53,7 +53,7 @@ static void RenderGallery(const ShaderLibrary* const shaders,
             continue;
         }
 
-        glUseProgram(ShaderLibraryProgram(shaders, index));
+        glUseProgram(GetShader(shaders, index));
         glBindBufferBase(GL_UNIFORM_BUFFER, 2, ui->ubo_handle[index]);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
@@ -84,7 +84,7 @@ int main() {
     HeapsInit(heaps);
     
     ShaderLog shaderLog = { ShaderLogWrite, nullptr };
-    ShaderLibrary* shaders = ShaderLibraryOpen("Shaders/",
+    Focus* shaders = FocusOpen("Shaders/",
                                                FocusShaderPrograms,
                                                FocusShaderProgramCount,
                                                &shaderLog,
@@ -152,7 +152,7 @@ int main() {
         UpdateCount += 1;
         glfwPollEvents();
         
-        ShaderLibraryReloadChanged(shaders);
+        ReloadShaders(shaders);
         
         input = NextRecordedInputState();
         
@@ -183,7 +183,7 @@ int main() {
         glfwSwapBuffers(window);
     }
     
-    ShaderLibraryClose(shaders);
+    FocusClose(shaders);
     glfwDestroyWindow(window);
     glfwTerminate();
 
