@@ -8,7 +8,7 @@
 #include "mkr/Camera.h"
 #include "mkr/Window.h"
 
-void RenderQuadToScreen(const Focus* const shaders,
+void RenderQuadToScreen(const Focus* shaders,
                         const UI* const ui,
                         const GLuint sampler,
                         const GLuint texture) {

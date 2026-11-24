@@ -2,7 +2,7 @@
 
 #include "mkr/Shader.h"
 
-extern const ShaderConfig FocusShaderPrograms[] = {
+ShaderConfig Programs[] = {
     { "Quad.vs", nullptr, "DrawTexture.fs", nullptr, nullptr, nullptr },
     { "Quad.vs", nullptr, "Tangent.fs",     nullptr, nullptr, nullptr },
     { "Quad.vs", nullptr, "Step.fs",        nullptr, nullptr, nullptr },
@@ -29,9 +29,5 @@ extern const ShaderConfig FocusShaderPrograms[] = {
     { "Quad.vs", nullptr, "Absolute.fs",    nullptr, nullptr, nullptr },
 };
 
-extern const size_t FocusShaderProgramCount =
-    sizeof(FocusShaderPrograms) / sizeof(FocusShaderPrograms[0]);
-
-static_assert(sizeof(FocusShaderPrograms) / sizeof(FocusShaderPrograms[0]) ==
-              (size_t)Shaders::Count,
-              "The enum and the Focus table must list the same programs.");
+static_assert(sizeof(Programs) / sizeof(Programs[0]) == (size_t)Shaders::Count,
+              "Mismatch between Programs and 'enum struct Shaders'.");
